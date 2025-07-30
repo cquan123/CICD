@@ -19,3 +19,7 @@ jobs:
     
     - name: Build
       run: dotnet build --no-restore
+
+    - name: 构建镜像
+      run: docker build -t cicd/cicd:latest .
+
