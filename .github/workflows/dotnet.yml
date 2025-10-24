@@ -30,8 +30,8 @@ jobs:
 
     - name: build and push
       run: |
-        docker build -t ${{secrets.HARBOR_HOST}}/demo/cicd:latest .
-        docker push ${{secrets.HARBOR_HOST}}/demo/cicd:latest
+        docker build -t ${{secrets.HARBOR_HOST}}/demo/cicd:${GITHUB_SHA::7} .
+        docker push ${{secrets.HARBOR_HOST}}/demo/cicd:${GITHUB_SHA::7}
     
         #    - name: Build
         #      run: dotnet build --no-restore
