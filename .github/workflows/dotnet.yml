@@ -16,15 +16,33 @@ jobs:
         dotnet-version: 9.x
     - name: Restore
       run: dotnet restore
+
+    - name: add harbor CA cert
+      run: |
+        mkdir -p /etc/docker/certs.d/${{secrets.HARBOR_HOST}}
+        echo "${{secrets.HARBOR_CA_CRT}}" > /etc/docker/certs.d/${{secrets.HARBOR_HOST}}/ca.crt
+        cp /etc/docker/certs.d/${{secrets.HARBOR_HOST}}/ca.crt /usr/local/share/ca-certificates/harbor-ca.crt
+        update-ca-certificates
+
+    - name: login to harbor
+      run: |
+        docker login https://${{secrets.HARBOR_HOST}} \
+          -u ${{secrets.HARBOR_USER}} \
+          -p ${{secrets.HARBOR_PWD}}
+
+    - name: build and push
+      run: |
+        docker build -t ${{secrets.HARBOR_HOST}}/demo/cicd:latest .
+        docker push ${{secrets.HARBOR_HOST}}/demo/cicd:latest
     
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Login to DockerHub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-    - name: 构建镜像
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/cicd:latest .
-    - name: Push Docker image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/cicd:latest
+        #    - name: Build
+        #      run: dotnet build --no-restore
+        #    - name: Login to DockerHub
+        #      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        #    - name: 构建镜像
+        #      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/cicd:latest .
+        #    - name: Push Docker image
+        #      run: docker push ${{ secrets.DOCKER_USERNAME }}/cicd:latest
 
     - name: ssh into k3s server and deploy
       run: |
