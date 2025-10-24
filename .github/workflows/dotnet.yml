@@ -46,6 +46,8 @@ jobs:
       run: |
         sshpass -p "${{ secrets.K8S_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.K8S_USERNAME }}@${{ secrets.K8s_HOST }} << 'EOF'
           echo "成功登录到k3s服务器"
-          cd /root/pro/deploy
-          kubectl apply -f CICD.yaml
+          # cd /root/pro/deploy
+          kubectl set image deployment/pro-cicd pro-cicd=${{secrets.HARBOR_HOST}}/demo/cicd:${{GITHUB_SHA::7}} --record
+          # kubectl apply -f CICD.yaml
+          kubectl rollout restart deployment/pro-cicd
          
