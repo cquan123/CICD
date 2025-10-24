@@ -26,9 +26,7 @@ jobs:
 
     - name: login to harbor
       run: |
-        docker login https://${{secrets.HARBOR_HOST}} \
-          -u ${{secrets.HARBOR_USER}} \
-          -p ${{secrets.HARBOR_PWD}}
+        docker login https://${{secrets.HARBOR_HOST}}  -u ${{secrets.HARBOR_USER}}   -p ${{secrets.HARBOR_PWD}}
 
     - name: build and push
       run: |
