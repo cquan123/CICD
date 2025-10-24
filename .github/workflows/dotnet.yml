@@ -50,4 +50,6 @@ jobs:
           kubectl set image deployment/pro-cicd pro-cicd=${{secrets.HARBOR_HOST}}/demo/cicd:${GITHUB_SHA::7} --record
           # kubectl apply -f CICD.yaml
           kubectl rollout restart deployment/pro-cicd
-         
+        
+
+
