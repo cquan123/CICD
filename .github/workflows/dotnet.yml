@@ -44,7 +44,7 @@ jobs:
 
     - name: ssh into k3s server and deploy
       run: |
-        sshpass -p "${{ secrets.K8S_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.K8S_USERNAME }}@${{ secrets.K8s_HOST }} << 'EOF'
+        sshpass -p "${{ secrets.K8S_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.K8S_USERNAME }}@${{ secrets.K8s_HOST }} << EOF
           echo "成功登录到k3s服务器"
           # cd /root/pro/deploy
           kubectl set image deployment/pro-cicd pro-cicd=${{secrets.HARBOR_HOST}}/demo/cicd:${GITHUB_SHA::7} --record
