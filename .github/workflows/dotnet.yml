@@ -19,10 +19,10 @@ jobs:
 
     - name: add harbor CA cert
       run: |
-        mkdir -p /etc/docker/certs.d/${{secrets.HARBOR_HOST}}
-        echo "${{secrets.HARBOR_CA_CRT}}" > /etc/docker/certs.d/${{secrets.HARBOR_HOST}}/ca.crt
-        cp /etc/docker/certs.d/${{secrets.HARBOR_HOST}}/ca.crt /usr/local/share/ca-certificates/harbor-ca.crt
-        update-ca-certificates
+        sudo  mkdir -p /etc/docker/certs.d/${{secrets.HARBOR_HOST}}
+        sudo  echo "${{secrets.HARBOR_CA_CRT}}" > /etc/docker/certs.d/${{secrets.HARBOR_HOST}}/ca.crt
+        sudo  cp /etc/docker/certs.d/${{secrets.HARBOR_HOST}}/ca.crt /usr/local/share/ca-certificates/harbor-ca.crt
+        sudo  update-ca-certificates
 
     - name: login to harbor
       run: |
